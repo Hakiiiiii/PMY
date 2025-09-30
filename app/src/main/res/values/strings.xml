@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="hint_full_name">Введите ФИО</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="submit">Отправить</string>
     <string name="app_name">Hello World</string>
+    <string name="zodiac_description">Изображение знака зодиака</string>
 </resources>
