@@ -4,6 +4,7 @@
     <string name="male">Мужской</string>
     <string name="female">Женский</string>
     <string name="submit">Отправить</string>
-    <string name="app_name">Hello World</string>
     <string name="zodiac_description">Изображение знака зодиака</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <!-- <string name="hello_blank_fragment">Hello blank fragment</string> -->
 </resources>
