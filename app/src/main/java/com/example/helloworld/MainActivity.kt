@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
                 else -> ""
             }
         }.attach()
+
+        val selectedTab = intent.getIntExtra("selected_tab", 0)
+        viewPager.currentItem = selectedTab
     }
 }
 
