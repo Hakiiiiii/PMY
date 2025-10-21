@@ -13,6 +13,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.helloworld.MyApplication
+import com.example.helloworld.database.Score
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.random.Random
 
 class GameActivity : AppCompatActivity() {
@@ -146,11 +151,36 @@ class GameActivity : AppCompatActivity() {
             .setTitle("Игра закончена!")
             .setMessage("Ваши очки: $score")
             .setPositiveButton("OK") { dialog, _ ->
+                saveScore()
                 finish()
                 dialog.dismiss()
             }
             .setCancelable(false)
             .show()
+    }
+
+    private fun saveScore() {
+        val sharedPref = getSharedPreferences("game_prefs", MODE_PRIVATE)
+        val userName = sharedPref.getString("current_user", "Anonymous") ?: "Anonymous"
+        val difficulty = sharedPref.getInt("speed", 5)
+        val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+
+        // Проверяем, есть ли пользователь в базе
+        Thread {
+            val dao = MyApplication.database.appDao()
+            val existingScore = dao.getAllScores().firstOrNull { it.userName == userName }
+
+            if (existingScore != null) {
+                // Обновляем, если новый score выше
+                if (score > existingScore.score) {
+                    dao.updateRecord(userName, score)
+                }
+            } else {
+                // Добавляем новую запись, если пользователя нет
+                val newScore = Score(userName = userName, score = score, difficulty = difficulty, date = date)
+                dao.insertScore(newScore)
+            }
+        }.start()
     }
 
     private fun pauseGame() {

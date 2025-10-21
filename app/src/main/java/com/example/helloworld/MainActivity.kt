@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
                 1 -> "Правила"
                 2 -> "Авторы"
                 3 -> "Настройки"
+                4 -> "Рекорды"
                 else -> ""
             }
         }.attach()
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = 5
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
@@ -45,6 +46,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
             1 -> RulesFragment()
             2 -> AuthorsFragment()
             3 -> SettingsFragment()
+            4 -> RecordsFragment()
             else -> Fragment()
         }
     }

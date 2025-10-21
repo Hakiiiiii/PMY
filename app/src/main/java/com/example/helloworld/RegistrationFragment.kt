@@ -1,23 +1,30 @@
 package com.example.helloworld
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.helloworld.MyApplication
+import com.example.helloworld.database.User
 import java.text.SimpleDateFormat
 import java.util.*
 
 class RegistrationFragment : Fragment() {
 
     private var selectedDateMillis: Long = 0
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_registration, container, false)
+
+        sharedPref = requireContext().getSharedPreferences("game_prefs", Context.MODE_PRIVATE)
 
         val etFullName = view.findViewById<EditText>(R.id.etFullName)
         val rgGender = view.findViewById<RadioGroup>(R.id.rgGender)
@@ -56,8 +63,18 @@ class RegistrationFragment : Fragment() {
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val formattedDate = sdf.format(calendar.time)
             tvOutput.text = "Выбрана дата: $formattedDate\nДень: $day, Месяц: $month\nЗодиак: $zodiac\nФИО: $fullName\nПол: $gender\nКурс: $course\nСложность: $difficulty"
+
             ivZodiac.setImageResource(getZodiacImage(zodiac))
             ivZodiac.visibility = View.VISIBLE
+
+            // Сохранение пользователя в базу Room
+            val user = User(name = fullName, difficulty = difficulty, date = formattedDate)
+            Thread {
+                MyApplication.database.appDao().insertUser(user)
+            }.start()
+
+            // Сохранение текущего пользователя в SharedPreferences для игры
+            sharedPref.edit().putString("current_user", fullName).apply()
         }
 
         return view
