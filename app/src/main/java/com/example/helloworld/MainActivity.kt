@@ -2,7 +2,6 @@ package com.example.helloworld
 
 import AuthorsFragment
 import RulesFragment
-import SettingsFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

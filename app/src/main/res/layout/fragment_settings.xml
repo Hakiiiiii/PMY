@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,8 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Скорость игры"
-        tools:ignore="HardcodedText" />
+        android:text="Скорость игры (1-10)" />
 
     <SeekBar
         android:id="@+id/sbSpeed"
@@ -19,46 +17,44 @@
         android:max="10" />
 
     <TextView
+        android:id="@+id/tvSpeedValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Макс. тараканов"
-        tools:ignore="HardcodedText" />
+        android:text="Скорость: 5"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Макс. тараканов" />
 
     <EditText
         android:id="@+id/etMaxRoaches"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:inputType="number"
-        tools:ignore="LabelFor" />
+        android:inputType="number" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Интервал бонусов (сек)"
-        tools:ignore="HardcodedText" />
+        android:text="Интервал бонусов (сек)" />
 
     <EditText
         android:id="@+id/etBonusInterval"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:inputType="number"
-        tools:ignore="LabelFor" />
+        android:inputType="number" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Длительность раунда (мин)"
-        tools:ignore="HardcodedText" />
+        android:text="Длительность раунда (мин)" />
 
     <EditText
         android:id="@+id/etRoundDuration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:inputType="number"
-        tools:ignore="LabelFor" />
+        android:inputType="number" />
 
     <Button
         android:id="@+id/btnPlay"

@@ -19,6 +19,7 @@ class GameActivity : AppCompatActivity() {
 
     private var score = 0
     private lateinit var tvScore: TextView
+    private lateinit var tvTimer: TextView
     private lateinit var gameLayout: FrameLayout
     private lateinit var btnPause: Button
     private val handler = Handler(Looper.getMainLooper())
@@ -26,17 +27,21 @@ class GameActivity : AppCompatActivity() {
     private var maxBugs = 5
     private var bugInterval = 1000L
     private var isPaused = false
+    private var timerSeconds = 300 // По умолчанию 5 мин (300 сек)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-
+        // Чтение настроек
         val sharedPref: SharedPreferences = getSharedPreferences("game_prefs", MODE_PRIVATE)
-        maxBugs = sharedPref.getInt("max_roaches", 5)
+        maxBugs = sharedPref.getInt("max_roaches", 5).coerceIn(1, 10)
         bugInterval = sharedPref.getInt("bonus_interval", 10) * 100L
+        val roundMinutes = sharedPref.getInt("round_duration", 5)
+        timerSeconds = roundMinutes * 60
 
         tvScore = findViewById(R.id.tvScore)
+        tvTimer = findViewById(R.id.tvTimer)
         gameLayout = findViewById(R.id.gameLayout)
         btnPause = findViewById(R.id.btnPause)
 
@@ -51,20 +56,25 @@ class GameActivity : AppCompatActivity() {
             pauseGame()
         }
 
+        // Добавляем начальное количество тараканов (половина от макс, но не меньше 1)
+        val initialBugs = (maxBugs / 2).coerceAtLeast(1)
+        repeat(initialBugs) {
+            addBug()
+        }
+
         startGame()
+        startTimer()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun startGame() {
         if (!isPaused) {
-            handler.postDelayed(object : Runnable {
-                override fun run() {
-                    if (bugs.size < maxBugs) {
-                        addBug()
-                    }
-                    startGame()
+            handler.postDelayed({
+                if (bugs.size < maxBugs) {
+                    addBug()
                 }
+                startGame()
             }, bugInterval)
         }
     }
@@ -82,6 +92,13 @@ class GameActivity : AppCompatActivity() {
                 updateScore()
                 gameLayout.removeView(bug)
                 bugs.remove(bug)
+
+                // Респаун нового таракана сразу после убийства
+                if (bugs.size < maxBugs) {
+                    handler.postDelayed({
+                        addBug()
+                    }, 500) // Задержка 0.5 сек для респауна
+                }
             }
         }
 
@@ -92,13 +109,11 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun animateBug(bug: ImageView) {
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                if (!isPaused) {
-                    bug.x = Random.nextFloat() * (gameLayout.width - 150)
-                    bug.y = Random.nextFloat() * (gameLayout.height - 150)
-                    animateBug(bug)
-                }
+        handler.postDelayed({
+            if (!isPaused) {
+                bug.x = Random.nextFloat() * (gameLayout.width - 150)
+                bug.y = Random.nextFloat() * (gameLayout.height - 150)
+                animateBug(bug)
             }
         }, Random.nextLong(500, 1500))
     }
@@ -107,20 +122,50 @@ class GameActivity : AppCompatActivity() {
         tvScore.text = "Очки: $score"
     }
 
+    private fun startTimer() {
+        val timerHandler = Handler(Looper.getMainLooper())
+        timerHandler.postDelayed(object : Runnable {
+            override fun run() {
+                if (!isPaused && timerSeconds > 0) {
+                    timerSeconds--
+                    val minutes = timerSeconds / 60
+                    val seconds = timerSeconds % 60
+                    tvTimer.text = "Время: $minutes:${seconds.toString().padStart(2, '0')}"
+
+                    timerHandler.postDelayed(this, 1000)
+                } else if (timerSeconds <= 0) {
+                    endGame()
+                }
+            }
+        }, 1000)
+    }
+
+    private fun endGame() {
+        isPaused = true
+        AlertDialog.Builder(this)
+            .setTitle("Игра закончена!")
+            .setMessage("Ваши очки: $score")
+            .setPositiveButton("OK") { dialog, _ ->
+                finish()
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
+    }
 
     private fun pauseGame() {
         isPaused = true
 
-        val items = arrayOf("Настройки", "Авторы", "Правила")
         AlertDialog.Builder(this)
             .setTitle("Игровое меню")
-            .setItems(items) { dialog, which ->
+            .setItems(arrayOf("Настройки", "Авторы", "Правила")) { _, which ->
                 val intent = Intent(this, MainActivity::class.java)
-                when (which) {
-                    0 -> intent.putExtra("selected_tab", 3)
-                    1 -> intent.putExtra("selected_tab", 2)
-                    2 -> intent.putExtra("selected_tab", 1)
-                }
+                intent.putExtra("selected_tab", when (which) {
+                    0 -> 3
+                    1 -> 2
+                    2 -> 1
+                    else -> 0
+                })
                 startActivity(intent)
                 finish()
             }

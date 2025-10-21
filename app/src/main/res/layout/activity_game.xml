@@ -5,7 +5,44 @@
     android:background="@drawable/game_background2"
     android:fitsSystemWindows="false">
 
+    <!-- Верхняя панель с очками и таймером (по центру, не перекрывает паузу) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#AAFFFFFF"
+        android:padding="8dp"
+        android:elevation="4dp"
+        android:gravity="center">
 
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Очки: 0"
+            android:textSize="24sp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Время: 5:00"
+            android:textSize="24sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/gameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="60dp" />
+
+    <!-- Кнопка "Пауза" справа сверху -->
     <Button
         android:id="@+id/btnPause"
         android:layout_width="wrap_content"
@@ -14,23 +51,5 @@
         android:layout_gravity="top|end"
         android:layout_margin="16dp"
         android:elevation="4dp" />
-
-    <TextView
-        android:id="@+id/tvScore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Очки: 0"
-        android:textSize="24sp"
-        android:background="#AAFFFFFF"
-        android:padding="16dp"
-        android:gravity="center"
-        android:elevation="4dp" />
-
-    <FrameLayout
-        android:id="@+id/gameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="60dp" />
 
 </FrameLayout>
