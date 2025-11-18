@@ -1,10 +1,11 @@
+package com.example.helloworld
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
-import com.example.helloworld.R
 
 class RulesFragment : Fragment() {
 

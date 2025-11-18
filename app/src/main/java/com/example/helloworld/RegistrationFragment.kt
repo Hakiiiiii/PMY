@@ -70,7 +70,7 @@ class RegistrationFragment : Fragment() {
             // Сохранение пользователя в базу Room
             val user = User(name = fullName, difficulty = difficulty, date = formattedDate)
             Thread {
-                MyApplication.database.appDao().insertUser(user)
+
             }.start()
 
             // Сохранение текущего пользователя в SharedPreferences для игры

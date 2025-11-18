@@ -61,8 +61,14 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation(libs.material)
     implementation("androidx.fragment:fragment-ktx:1.8.9")
+    // Koin
+    implementation(libs.koin.android)
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+    // Retrofit + Gson (вместо SimpleXML)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 }

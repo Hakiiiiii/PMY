@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="score_format">Очки: %d</string>
+    <string name="timer_format">Время: %d:%s</string>
     <string name="hint_full_name">Введите ФИО</string>
     <string name="male">Мужской</string>
     <string name="female">Женский</string>

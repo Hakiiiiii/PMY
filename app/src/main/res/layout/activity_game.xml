@@ -5,7 +5,7 @@
     android:background="@drawable/game_background2"
     android:fitsSystemWindows="false">
 
-    <!-- Верхняя панель с очками и таймером (по центру, не перекрывает паузу) -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,22 @@
         android:layout_gravity="bottom"
         android:layout_marginTop="60dp" />
 
-    <!-- Кнопка "Пауза" справа сверху -->
+    <ImageView
+        android:id="@+id/bonusCoin"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/bonus_coin"
+        android:visibility="gone"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:id="@+id/goldBug"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/gold_bug"
+        android:visibility="gone" />
+
+
     <Button
         android:id="@+id/btnPause"
         android:layout_width="wrap_content"
